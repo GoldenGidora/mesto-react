@@ -11,7 +11,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
-    _request (endPoint, options) {
+    _request(endPoint, options) {
         return fetch(`${this._baseUrl}${endPoint}`, options)
             .then(this._parseResponse)
             .catch(e => console.log(e));
