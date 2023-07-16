@@ -5,7 +5,6 @@ function PopupWithForm(props) {
             <div className="popup__container">
                 <h2 className="popup__title">{props.title}</h2>
                 <form
-                    id="popup_edit_submit"
                     className="form"
                     name={`${props.name}`}
                     action="#"
