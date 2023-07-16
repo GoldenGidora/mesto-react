@@ -48,6 +48,7 @@ function App() {
             <PopupWithForm
                 name='edit'
                 title='Редактировать профиль'
+                submitText='Сохранить'
                 isOpen={isEditProfilePopupOpen}
                 onClose={closeAllPopups}
             >
@@ -77,11 +78,11 @@ function App() {
                     />
                     <span className="popup__input-error user-desc-input-error"></span>
                 </label>
-                <button type="submit" className="popup__submit">Сохранить</button>
             </PopupWithForm>
             <PopupWithForm
                 name='add'
                 title='Новое место'
+                submitText='Сохранить'
                 isOpen={isAddPlacePopupOpen}
                 onClose={closeAllPopups}
             >
@@ -109,19 +110,17 @@ function App() {
                     />
                     <span className="popup__input-error postUrl-input-error"></span>
                 </label>
-                <button type="submit" className="popup__submit">Сохранить</button>
             </PopupWithForm>
             <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
+                card={selectedCard}
+                onClose={closeAllPopups}
             />
-            <div className="popup popup_type_confirm">
-                <div className="popup__container">
-                    <button type='button' className="popup__close"></button>
-                    <h2 className="popup__title">Вы уверены?</h2>
-                    <button type="button" id="DeleteCard" className="popup__submit">Да</button>
-                </div>
-            </div>
+            <PopupWithForm
+                name='confirm'
+                title='Вы уверены?'
+                submitText='Да'
+                onClose={closeAllPopups}
+            />
             <PopupWithForm
                 name='avatar'
                 title='Обновить аватар'

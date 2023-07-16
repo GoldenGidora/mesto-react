@@ -1,3 +1,5 @@
+import React from "react";
+
 function PopupWithForm(props) {
 
     return (
@@ -10,8 +12,9 @@ function PopupWithForm(props) {
                     action="#"
                 >
                     {props.children}
+                    <button type="submit" className="popup__submit">{props.submitText}</button>
                 </form>
-                <button type="button" className="popup__close" onClick={props.onClose}></button>
+                <button type="button" className="popup__close" onClick={props.onClose}/>
             </div>
         </div>
     )
