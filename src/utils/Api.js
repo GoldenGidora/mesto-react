@@ -13,7 +13,8 @@ class Api {
 
     _request (endPoint, options) {
         return fetch(`${this._baseUrl}${endPoint}`, options)
-            .then(this._parseResponse);
+            .then(this._parseResponse)
+            .catch(e => console.log(e));
     }
 
     getCards() {
