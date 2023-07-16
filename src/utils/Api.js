@@ -11,15 +11,19 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
+    _request (endPoint, options) {
+        return fetch(`${this._baseUrl}${endPoint}`, options)
+            .then(this._parseResponse);
+    }
+
     getCards() {
-        return fetch(`${this._baseUrl}/cards`, {
+        return this._request('/cards', {
             headers: this._headers
         })
-            .then(res => this._parseResponse(res))
     }
 
     addCard(data) {
-        return fetch(`${this._baseUrl}/cards`, {
+        return this._request(`/cards`, {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
@@ -27,43 +31,37 @@ class Api {
                 link: data.link
             })
         })
-            .then(res => this._parseResponse(res));
     }
 
     removeCard(id) {
-        return fetch(`${this._baseUrl}/cards/${id}`, {
+        return this._request(`/cards/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
-            .then(res => this._parseResponse(res))
-            .catch(e => console.log(e));
     }
 
     setLike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        return this._request(`/cards/${id}/likes`, {
             method: 'PUT',
             headers: this._headers
         })
-            .then(res => this._parseResponse(res));
     }
 
     removeLike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+        return this._request(`/cards/${id}/likes`, {
             method: 'DELETE',
             headers: this._headers
         })
-            .then(res => this._parseResponse(res));
     }
 
     getUserInfo() {
-        return fetch(`${this._baseUrl}/users/me`, {
+        return this._request(`/users/me`, {
             headers: this._headers
         })
-            .then(res => this._parseResponse(res));
     }
 
     editUserInfo(data) {
-        return fetch(`${this._baseUrl}/users/me`, {
+        return this._request(`/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
@@ -71,25 +69,25 @@ class Api {
                 about: data.userdescription
             })
         })
-            .then(res => this._parseResponse(res));
     }
 
     editAvatar(data) {
-        return fetch(`${this._baseUrl}/users/me/avatar`, {
+        return this._request(`/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 avatar: data.avatar
             })
         })
-            .then(res => this._parseResponse(res));
     }
 }
 
-export default new Api({
+const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-70',
     headers: {
         authorization: '99bdb945-3b1c-4bb2-a40c-a00024f1a035',
         'Content-Type': 'application/json'
     }
-})
+});
+
+export default api;
