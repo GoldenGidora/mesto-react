@@ -11,22 +11,15 @@ function Main(props) {
     const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
-        api.getUserInfo()
-            .then(data => {
-                setUserName(data.name);
-                setUserDescription(data.about);
-                setUserAvatar(data.avatar);
+        Promise.all([api.getUserInfo(), api.getCards()])
+            .then(([user, cards]) => {
+                setUserName(user.name);
+                setUserDescription(user.about);
+                setUserAvatar(user.avatar);
+                setCards(cards);
             })
-            .catch(e => console.log(e));
-    })
-
-    React.useEffect(() => {
-        api.getCards()
-            .then(data => {
-                setCards(data);
-            })
-            .catch(e => console.log(e));
-    })
+            .catch(e => console.log(e))
+    }, [])
 
     return (
         <main className="main">
