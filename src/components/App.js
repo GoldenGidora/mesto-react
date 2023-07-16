@@ -124,6 +124,7 @@ function App() {
             <PopupWithForm
                 name='avatar'
                 title='Обновить аватар'
+                submitText='Сохранить'
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
             >
@@ -138,7 +139,6 @@ function App() {
                     />
                     <span className="popup__input-error avatar-input-error"></span>
                 </label>
-                <button type="submit" className="popup__submit">Сохранить</button>
             </PopupWithForm>
         </div>
     );
