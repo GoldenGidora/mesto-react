@@ -1,6 +1,5 @@
 import EditButton from '../images/edit_button.svg';
 import AddButton from '../images/add.svg';
-import api from '../utils/Api';
 import React from "react";
 import Card from "./Card";
 import {currentUserContext} from "../contexts/CurrentUserContext";
@@ -46,6 +45,8 @@ function Main(props) {
                         key={card._id}
                         card={card}
                         onCardClick={props.onCardClick}
+                        onCardLike={props.onCardLike}
+                        onCardDelete={props.onCardDelete}
                     />
                 })}
 

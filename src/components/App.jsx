@@ -58,6 +58,15 @@ function App() {
             })
     }
 
+    const handleCardDelete = card => {
+        api.removeCard(card._id)
+            .then(() => {
+                setCards(cards.filter((item) => {
+                    return item._id !== card._id;
+                }))
+            })
+    }
+
     return (
         <div className="page">
             <currentUserContext.Provider value={currentUser}>
@@ -67,6 +76,8 @@ function App() {
                     onAddPlace={handleAddPlaceClick}
                     onEditAvatar={handleEditAvatarClick}
                     onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
                     cards={cards}
                 />
                 <Footer/>
