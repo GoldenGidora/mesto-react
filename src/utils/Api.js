@@ -41,16 +41,15 @@ class Api {
         })
     }
 
-    setLike(id) {
+    /**
+     *
+     * @param {number} id - card id
+     * @param {boolean} status - card liked status
+     * @returns {Promise<object>} - return object of new card
+     */
+    changeLikeCardStatus(id, status) {
         return this._request(`/cards/${id}/likes`, {
-            method: 'PUT',
-            headers: this._headers
-        })
-    }
-
-    removeLike(id) {
-        return this._request(`/cards/${id}/likes`, {
-            method: 'DELETE',
+            method: status ? 'DELETE' : 'PUT',
             headers: this._headers
         })
     }
