@@ -45,7 +45,7 @@ class Api {
      *
      * @param {number} id - card id
      * @param {boolean} status - card liked status
-     * @returns {Promise<object>} - return object of new card
+     * @returns {Promise<Response | void>} - promise
      */
     changeLikeCardStatus(id, status) {
         return this._request(`/cards/${id}/likes`, {
@@ -60,13 +60,21 @@ class Api {
         })
     }
 
-    editUserInfo(data) {
+    /**
+     *
+     * @param {{
+     *     name,
+     *     about
+     * }} data - Updated user information
+     * @return {Promise<Response | object>} - return user object
+     */
+    setUserInfo(data) {
         return this._request(`/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
-                name: data.username,
-                about: data.userdescription
+                name: data.name,
+                about: data.about
             })
         })
     }

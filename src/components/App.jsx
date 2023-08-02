@@ -7,6 +7,7 @@ import ImagePopup from "./ImagePopup";
 import {currentUserContext} from "../contexts/CurrentUserContext";
 import React from 'react';
 import api from "../utils/Api";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -67,6 +68,11 @@ function App() {
             })
     }
 
+    const handleUpdateUser = userInfo => {
+        api.setUserInfo(userInfo)
+            .then(user => setCurrentUser(user))
+    }
+
     return (
         <div className="page">
             <currentUserContext.Provider value={currentUser}>
@@ -81,40 +87,11 @@ function App() {
                     cards={cards}
                 />
                 <Footer/>
-                <PopupWithForm
-                    name='edit'
-                    title='Редактировать профиль'
-                    submitText='Сохранить'
+                <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
                     onClose={closeAllPopups}
-                >
-                    <label className="popup__field">
-                        <input
-                            id="username-input"
-                            name="username"
-                            type="text"
-                            placeholder="Введите имя"
-                            className="popup__input popup__input_type_name"
-                            minLength="2"
-                            maxLength="40"
-                            required
-                        />
-                        <span className="popup__input-error username-input-error"></span>
-                    </label>
-                    <label className="popup__field">
-                        <input
-                            id="user-desc-input"
-                            name="userdescription"
-                            type="text"
-                            placeholder="Введите описание"
-                            className="popup__input popup__input_type_description"
-                            minLength="2"
-                            maxLength="200"
-                            required
-                        />
-                        <span className="popup__input-error user-desc-input-error"></span>
-                    </label>
-                </PopupWithForm>
+                    onUpdateUser={handleUpdateUser}
+                />
                 <PopupWithForm
                     name='add'
                     title='Новое место'
