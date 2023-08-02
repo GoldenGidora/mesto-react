@@ -3,36 +3,23 @@ import AddButton from '../images/add.svg';
 import api from '../utils/Api';
 import React from "react";
 import Card from "./Card";
+import {currentUserContext} from "../contexts/CurrentUserContext";
 
 function Main(props) {
-    const [userAvatar, setUserAvatar] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userName, setUserName] = React.useState('');
-    const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        Promise.all([api.getUserInfo(), api.getCards()])
-            .then(([user, cards]) => {
-                setUserName(user.name);
-                setUserDescription(user.about);
-                setUserAvatar(user.avatar);
-                setCards(cards);
-            })
-            .catch(e => console.log(e))
-    }, [])
+    const currentUser = React.useContext(currentUserContext);
 
     return (
         <main className="main">
             <section className="profile">
                 <div className="profile__card">
-                    <img src={userAvatar} alt="аватар профиля" className="profile__avatar"/>
+                    <img src={currentUser.avatar} alt="аватар профиля" className="profile__avatar"/>
                     <button
                         className="profile__avatar-edit"
                         onClick={props.onEditAvatar}
                     />
                     <div className="profile__info">
                         <div className="profile__user">
-                            <h1 className="profile__title">{userName}</h1>
+                            <h1 className="profile__title">{currentUser.name}</h1>
                             <button
                                 type="button"
                                 className="profile__button profile__button_type_edit"
@@ -42,7 +29,7 @@ function Main(props) {
                                      alt="Редактировать профиль"/>
                             </button>
                         </div>
-                        <p className="profile__text">{userDescription}</p>
+                        <p className="profile__text">{currentUser.about}</p>
                     </div>
                 </div>
                 <button
@@ -54,7 +41,7 @@ function Main(props) {
                 </button>
             </section>
             <section className="cards">
-                {cards.map(card => {
+                {props.cards.map(card => {
                     return <Card
                         key={card._id}
                         card={card}

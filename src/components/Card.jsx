@@ -1,12 +1,14 @@
 import React from "react";
+import {currentUserContext} from "../contexts/CurrentUserContext";
 
 const Card = ({card, onCardClick}) => {
+    const currentUser = React.useContext(currentUserContext);
     const handleCardClick = () => {
         onCardClick(card);
     }
     return (
         <div className="cards__item">
-            <button type="button" className="cards__delete"></button>
+            <button type="button" className={card.owner_id === currentUser._id ? 'cards__delete' : ''}></button>
             <img className="cards__img"
                  src={card.link}
                  alt={card.name}
