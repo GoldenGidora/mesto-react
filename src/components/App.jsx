@@ -15,6 +15,7 @@ function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
@@ -71,29 +72,35 @@ function App() {
     }
 
     const handleUpdateUser = userInfo => {
+        setIsLoading(true);
         api.setUserInfo(userInfo)
             .then((user) => {
                 setCurrentUser(user);
                 closeAllPopups();
             })
             .catch(e => console.log(e))
+            .finally(() => setIsLoading(false))
     }
 
     const handleUpdateAvatar = (newData) => {
+        setIsLoading(true);
         api.editAvatar(newData)
             .then((data) => {
                 setCurrentUser(data);
                 closeAllPopups();
             })
+            .finally(() => setIsLoading(false))
     }
 
     const handleAddPlace = (newData) => {
+        setIsLoading(true);
         api.addCard(newData)
             .then(newCard => {
                 setCards([newCard, ...cards]);
                 closeAllPopups();
             })
             .then(e => console.log(e))
+            .finally(() => setIsLoading(false))
     }
 
     return (
@@ -114,11 +121,13 @@ function App() {
                     isOpen={isEditProfilePopupOpen}
                     onClose={closeAllPopups}
                     onUpdateUser={handleUpdateUser}
+                    onLoading={isLoading}
                 />
                 <AddPlacePopup
                     isOpen={isAddPlacePopupOpen}
                     onClose={closeAllPopups}
                     onAddPlace={handleAddPlace}
+                    onLoading={isLoading}
                 />
                 <ImagePopup
                     card={selectedCard}
@@ -134,6 +143,7 @@ function App() {
                     isOpen={isEditAvatarPopupOpen}
                     onClose={closeAllPopups}
                     onUpdateAvatar={handleUpdateAvatar}
+                    onLoading={isLoading}
                 />
             </currentUserContext.Provider>
         </div>
