@@ -4,8 +4,8 @@ import {currentUserContext} from '../contexts/CurrentUserContext';
 
 const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
     const currentUser = React.useContext(currentUserContext)
-    const [name, setName] = React.useState("");
-    const [about, setAbout] = React.useState("");
+    const [name, setName] = React.useState('');
+    const [about, setAbout] = React.useState('');
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -25,7 +25,7 @@ const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
     React.useEffect(() => {
         setName(currentUser.name);
         setAbout(currentUser.about);
-    }, [currentUser]);
+    }, [currentUser, isOpen]);
 
     return (
         <PopupWithForm
@@ -45,7 +45,14 @@ const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
                     className="popup__input popup__input_type_name"
                     minLength="2"
                     maxLength="40"
-                    value={name}
+                    value={name || ''}
+                    /* Вопрос к ревьюеру:
+                    Если в 48 строке убрать || '', то реакт будет ругаться, что управляемый инпут становится uncontrolled
+                    Правильно ли я понимаю, что это связано с контекстом currentUser
+                    Из-за того что на 25 строке мы используем хук useEffect, который реагирует на изменения currentUser и по дефолту берёт значения оттуда при монтировании
+                    Следовательно у нас name (как и about) может оказаться undefined если из api не придёт объект (или пустой объект)
+                    И следовательно мы тут должны добавить "защиту" в виде || '', чтобы не было value=undefined ?
+                     */
                     onChange={handleNameChange}
                     required
                 />
@@ -60,7 +67,7 @@ const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
                     className="popup__input popup__input_type_description"
                     minLength="2"
                     maxLength="200"
-                    value={about}
+                    value={about || ''}
                     onChange={handleDescriptionChange}
                     required
                 />

@@ -8,6 +8,7 @@ import {currentUserContext} from "../contexts/CurrentUserContext";
 import React from 'react';
 import api from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -64,13 +65,25 @@ function App() {
             .then(() => {
                 setCards(cards.filter((item) => {
                     return item._id !== card._id;
-                }))
+                }));
             })
     }
 
     const handleUpdateUser = userInfo => {
         api.setUserInfo(userInfo)
-            .then(user => setCurrentUser(user))
+            .then((user) => {
+                setCurrentUser(user);
+                closeAllPopups();
+            })
+            .catch(e => console.log(e))
+    }
+
+    const handleUpdateAvatar = (newData) => {
+        api.editAvatar(newData)
+            .then((data) => {
+                setCurrentUser(data);
+                closeAllPopups();
+            })
     }
 
     return (
@@ -134,25 +147,11 @@ function App() {
                     submitText='Да'
                     onClose={closeAllPopups}
                 />
-                <PopupWithForm
-                    name='avatar'
-                    title='Обновить аватар'
-                    submitText='Сохранить'
-                    isOpen={isEditAvatarPopupOpen}
-                    onClose={closeAllPopups}
-                >
-                    <label className="popup__field">
-                        <input
-                            id="avatar-input"
-                            name="avatar"
-                            type="url"
-                            placeholder="Вставьте ссылку"
-                            className="popup__input popup__input_type_link"
-                            required
-                        />
-                        <span className="popup__input-error avatar-input-error"></span>
-                    </label>
-                </PopupWithForm>
+                <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                onUpdateAvatar={handleUpdateAvatar}
+                />
             </currentUserContext.Provider>
         </div>
     );
