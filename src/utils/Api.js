@@ -60,14 +60,6 @@ class Api {
         })
     }
 
-    /**
-     *
-     * @param {{
-     *     name,
-     *     about
-     * }} data - Updated user information
-     * @return {Promise<Response | object>} - return user object
-     */
     setUserInfo(data) {
         return this._request(`/users/me`, {
             method: 'PATCH',
