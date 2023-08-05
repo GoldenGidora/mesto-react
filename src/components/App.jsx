@@ -2,10 +2,9 @@ import '../pages/index.css';
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import {currentUserContext} from "../contexts/CurrentUserContext";
-import React from 'react';
+import {useState, useEffect} from 'react';
 import api from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -13,17 +12,17 @@ import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
 
 function App() {
-    const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-    const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-    const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-    const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [selectedCard, setSelectedCard] = React.useState({});
-    const [currentUser, setCurrentUser] = React.useState({});
-    const [cards, setCards] = React.useState([]);
-    const [removeCard, setRemoveCard] = React.useState('');
+    const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+    const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+    const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+    const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedCard, setSelectedCard] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
+    const [cards, setCards] = useState([]);
+    const [removeCard, setRemoveCard] = useState('');
 
-    React.useEffect(() => {
+    useEffect(() => {
         Promise.all([api.getUserInfo(), api.getCards()])
             .then(([user, cards]) => {
                 setCurrentUser(user);
@@ -70,6 +69,7 @@ function App() {
             .then((newCard) => {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
             })
+            .catch(e => console.log(e));
     }
 
     const handleCardDelete = card => {
@@ -103,7 +103,8 @@ function App() {
                 setCurrentUser(data);
                 closeAllPopups();
             })
-            .finally(() => setIsLoading(false))
+            .catch(e => console.log(e))
+            .finally(() => setIsLoading(false));
     }
 
     const handleAddPlace = (newData) => {
@@ -113,7 +114,7 @@ function App() {
                 setCards([newCard, ...cards]);
                 closeAllPopups();
             })
-            .then(e => console.log(e))
+            .catch(e => console.log(e))
             .finally(() => setIsLoading(false))
     }
 

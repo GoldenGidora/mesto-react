@@ -1,11 +1,11 @@
 import EditButton from '../images/edit_button.svg';
 import AddButton from '../images/add.svg';
-import React from "react";
+import {useContext} from "react";
 import Card from "./Card";
 import {currentUserContext} from "../contexts/CurrentUserContext";
 
 function Main(props) {
-    const currentUser = React.useContext(currentUserContext);
+    const currentUser = useContext(currentUserContext);
 
     return (
         <main className="main">
